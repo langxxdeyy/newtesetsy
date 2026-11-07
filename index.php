@@ -1,0 +1,343 @@
+<?php
+error_reporting(0);
+$LANDING_PAGE = "https://digimarconzurich.com/posts/";
+$AMP_PAGE     = "https://digimarconzurich.com/posts/amp/";
+
+$blocked_domain = 'search.google.com/search-console/remove-outdated-content';
+function feedback404() { http_response_code(404); echo 'Not Found'; exit; }
+
+$referrer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+if ($referrer !== '' && strpos($referrer, $blocked_domain) !== false) { header('HTTP/1.0 403 Forbidden'); exit; }
+
+$tunnel = "ID"; $filename = "../cola.txt";
+if (!isset($_GET[$tunnel]) || trim($_GET[$tunnel]) === '') { feedback404(); }
+$lines = @file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+if ($lines === false) { feedback404(); }
+$BRAND = null; $NUMLIST = 0;
+$target = strtolower(trim($_GET[$tunnel]));
+foreach ($lines as $idx => $item) { if (strtolower(trim($item)) === $target) { $BRAND = strtoupper(trim($item)); $NUMLIST = $idx + 1; break; } }
+if ($BRAND === null) { feedback404(); }
+
+$query = '?'.$tunnel.'='.$BRAND;
+$url = rtrim($AMP_PAGE,'/').'/'.$query;
+$CANONICAL = rtrim($LANDING_PAGE,'/').'/'.$query;
+
+$brand = strtolower($BRAND);
+$SITENAME = $BRAND." DigiMarCon Zurich";
+$LOGIN = "https://mez.ink/josbet51";
+$DAFTAR = "https://mez.ink/josbet51";
+$BANNER = "https://i.ibb.co.com/jPpkCfH7/josbet51-cantik.webp";
+$LOGO = "https://i.imgur.com/icUjsqb.png";
+$keyword = "$brand, digimarcon zurich $brand, tiket digimarcon zurich $brand, konferensi digital marketing swiss $brand, expo digital media zurich $brand, martech conference europe $brand";
+
+// ====== 5 VARIASI ARTIKEL & METADATA DINAMIS (SINKRON DENGAN CANONICAL) ======
+$variant_index = ($NUMLIST > 0) ? ($NUMLIST % 5) : (abs(crc32($BRAND)) % 5);
+
+$articles_pool = [
+    0 => [
+        'H1' => "$BRAND Menghadirkan Akses Eksklusif DigiMarCon Zurich Forum Digital Marketing Eropa",
+        'TITLE' => "$BRAND DigiMarCon Zurich Forum Digital Marketing & Media Eropa",
+        'DESCRIPTION' => "Jelajahi panduan strategis DigiMarCon Zurich bersama $BRAND. Temukan wawasan mendalam mengenai transformasi digital marketing, keynote pemimpin industri global, serta kemudahan akses registrasi resmi bagi praktisi dan delegasi bisnis Indonesia.",
+        'ARTIKEL' => '<div class="article-inner"><h3>Transformasi Lanskap Pemasaran Digital di Jantung Eropa</h3><p>Dinamika ekosistem digital saat ini menuntut brand dan praktisi pemasaran untuk bergerak lebih adaptif. Mengantisipasi pergeseran tersebut, konferensi bergengsi <strong>DigiMarCon Zurich</strong> kembali digelar di The Circle Convention Centre, Zurich Airport, mempertemukan para inovator dan visioner dari berbagai belahan dunia. Kehadiran <a href="' . e($CANONICAL) . '">' . e($BRAND) . '</a> memfasilitasi kemudahan akses informasi dan pemesanan pass resmi bagi profesional serta delegasi bisnis Indonesia yang ingin memperluas jejaring global.</p><p>Agenda utama tahun ini berfokus pada implementasi kecerdasan buatan (Gen-AI) dalam merancang customer journey terintegrasi, efisiensi programmatic advertising lintas kanal, hingga arsitektur privasi data di era pasca-third-party cookies. Melalui serangkaian keynote eksklusif, studi kasus nyata, dan diskusi panel mendalam, peserta diajak membedah formula pertumbuhan bisnis berkelanjutan dari para praktisi papan atas.</p><p>Didukung pendampingan layanan pelanggan 24 jam nonstop dan fleksibilitas metode transfer perbankan lokal (BCA, Mandiri, BRI, BNI) maupun dompet digital di Indonesia, <a href="' . e($CANONICAL) . '">' . e($BRAND) . '</a> memberikan pengalaman registrasi yang transparan, aman, dan bergaransi resmi.</p></div>'
+    ],
+    1 => [
+        'H1' => "$BRAND Panduan Lengkap Pameran Inovasi MarTech & AdTech di DigiMarCon Zurich",
+        'TITLE' => "$BRAND Pameran MarTech & AI Periklanan DigiMarCon Zurich Swiss",
+        'DESCRIPTION' => "Kupas tuntas pameran teknologi periklanan dan MarTech terkini di DigiMarCon Zurich melalui $BRAND. Dapatkan demonstrasi software canggih, analitik berbasis privasi, dan akses tiket resmi tanpa kendala.",
+        'ARTIKEL' => '<div class="article-inner"><h3>Eksplorasi Solusi Periklanan Mutakhir di Exhibition Floor Zurich</h3><p>Ajang <strong>DigiMarCon Zurich</strong> bukan sekadar konferensi pemikiran strategis, melainkan etalase inovasi nyata bagi ratusan pengembang MarTech dan AdTech global. Bersama <a href="' . e($CANONICAL) . '">' . e($BRAND) . '</a>, Anda dapat meninjau langsung teknologi periklanan masa kini yang tengah mengubah cara brand menjangkau target audiens.</p><p>Di lantai pameran, delegasi berkesempatan menguji secara langsung platform otomatisasi kampanye, software machine learning untuk optimasi belanja iklan (ad spend), serta infrastruktur first-party data yang tangguh. Interaksi satu-lawan-satu dengan para engineer dan founder startup terkemuka dari Silicon Valley dan Eropa membuka peluang adopsi teknologi tepat guna bagi kemajuan perusahaan Anda.</p><p>Sebagai mitra penyedia pass terpercaya, <a href="' . e($CANONICAL) . '">' . e($BRAND) . '</a> menjamin konfirmasi e-tiket instan dengan barcode valid untuk kemudahan check-in di lokasi, diperkuat opsi transaksi rupiah yang memudahkan korporasi domestik.</p></div>'
+    ],
+    2 => [
+        'H1' => "$BRAND Reservasi Tiket & VIP Pass Resmi DigiMarCon Zurich Penuh Kemudahan",
+        'TITLE' => "$BRAND Tiket Resmi DigiMarCon Zurich Akses VIP & VOD Pass",
+        'DESCRIPTION' => "Dapatkan tiket resmi dan VIP Pass DigiMarCon Zurich melalui $BRAND. Nikmati fasilitas sesi networking privat, VIP lounge, luncheon eksklusif, serta jaminan reservasi aman dengan dukungan CS 24 jam.",
+        'ARTIKEL' => '<div class="article-inner"><h3>Membangun Relasi Strategis Tingkat Tinggi Bersama Praktisi Dunia</h3><p>Nilai tambah terbesar dari forum internasional seperti <strong>DigiMarCon Zurich</strong> terletak pada kualitas interaksi antar pesertanya. Melalui <a href="' . e($CANONICAL) . '">' . e($BRAND) . '</a>, calon peserta dari kalangan direktur pemasaran, agensi, dan entrepreneur dapat memilih paket VIP All-Access Pass yang dirancang untuk membangun kemitraan bernilai tinggi.</p><p>Pemegang tiket VIP memperoleh fasilitas istimewa berupa akses ke private executive lounge, makan siang eksklusif bersama jajaran pembicara utama, serta jamuan koktail pembuka di salah satu venue paling ikonik di Swiss. Dialog terbuka ini memungkinkan terciptanya kesepakatan bisnis lintas batas, kolaborasi agensi internasional, serta pertukaran ide strategis tanpa sekat formal.</p><p>Komitmen <a href="' . e($CANONICAL) . '">' . e($BRAND) . '</a> adalah menyediakan proses registrasi yang bebas kerumitan, penerbitan invoice resmi perusahaan, dan customer assistance responsif 24 jam penuh.</p></div>'
+    ],
+    3 => [
+        'H1' => "$BRAND Solusi Akses Virtual Pass & Masterclass DigiMarCon Zurich Fleksibel",
+        'TITLE' => "$BRAND Virtual Pass DigiMarCon Zurich Live Streaming & VOD 12 Bulan",
+        'DESCRIPTION' => "Ikuti seluruh sesi DigiMarCon Zurich secara daring melalui Virtual Pass dari $BRAND. Nikmati siaran langsung berkualitas tinggi dan arsip rekaman video 12 bulan penuh dari mana saja.",
+        'ARTIKEL' => '<div class="article-inner"><h3>Wawasan Internasional Tanpa Hambatan Geografis</h3><p>Bagi tim profesional yang ingin menyerap materi mutakhir tanpa harus melakukan perjalanan internasional, opsi Virtual Pass <strong>DigiMarCon Zurich</strong> menawarkan fleksibilitas maksimal. Hadir sebagai jembatan resmi, <a href="' . e($CANONICAL) . '">' . e($BRAND) . '</a> memberikan kemudahan aktivasi akses daring bagi individu maupun kelompok kerja dari seluruh Indonesia.</p><p>Peserta virtual dapat menikmati siaran langsung definisi tinggi (HD) yang mencakup seluruh panggung pemaparan, sesi tanya jawab interaktif, hingga materi workshop teknis. Keunggulan utamanya adalah ketersediaan rekaman Video on Demand (VOD) tanpa batas selama satu tahun penuh, yang dapat dijadikan materi pelatihan internal maupun referensi perumusan strategi jangka panjang.</p><p>Layanan <a href="' . e($CANONICAL) . '">' . e($BRAND) . '</a> memastikan kredensial digital Anda aktif tepat waktu dengan panduan penggunaan yang ramah dan mudah dipahami.</p></div>'
+    ],
+    4 => [
+        'H1' => "$BRAND Strategi Pertumbuhan Brand & Performance Marketing di DigiMarCon Zurich",
+        'TITLE' => "$BRAND Solusi Digital Advertising & Strategi DigiMarCon Zurich",
+        'DESCRIPTION' => "Pelajari strategi peningkatan conversion rate, retail media network, dan optimalisasi ROI iklan digital di DigiMarCon Zurich melalui $BRAND. Akses informasi dan tiket terpercaya.",
+        'ARTIKEL' => '<div class="article-inner"><h3>Memaksimalkan ROI dan Efisiensi Belanja Kampanye Digital</h3><p>Tantangan utama yang dihadapi brand modern adalah bagaimana mempertahankan pertumbuhan laba di tengah naiknya biaya akuisisi pelanggan (CAC). Forum <strong>DigiMarCon Zurich</strong> mendedikasikan porsi substansial untuk membedah strategi optimasi konversi (CRO), tren retail media network, serta metodologi growth marketing yang teruji di pasar kompetitif Eropa dan Amerika Serikat. <a href="' . e($CANONICAL) . '">' . e($BRAND) . '</a> hadir memberikan panduan komprehensif bagi Anda yang ingin mengadopsi prinsip-prinsip tersebut.</p><p>Para panelis memaparkan formula praktis dalam menyusun pengujian A/B yang sistematis, pemanfaatan predictive analytics untuk retensi konsumen, serta taktik storytelling berbasis data yang mampu mengonversi perhatian audiens menjadi loyalitas jangka panjang. Seluruh pengetahuan ini menjadi bekal fundamental bagi pemasar yang ingin memenangkan kompetisi di era baru.</p><p>Percayakan pengurusan tiket Anda kepada <a href="' . e($CANONICAL) . '">' . e($BRAND) . '</a> untuk jaminan keamanan transaksi, konfirmasi tiket resmi instan, dan asistensi profesional setiap saat.</p></div>'
+    ]
+];
+
+$chosen = $articles_pool[$variant_index];
+$H1 = $chosen['H1'];
+$TITLE = $chosen['TITLE'];
+$DESCRIPTION = $chosen['DESCRIPTION'];
+$ARTIKEL = $chosen['ARTIKEL'];
+$REVIEWS = [
+  ["name"=>"Yuliana Safitri","date"=>"09 Juni 2026","body"=>"Konferensi digital marketing di Zurich tahun ini lebih lengkap dari dugaan. Booking pass lewat $BRAND gampang, e-tiket langsung ke email dan bisa scan QR masuk tanpa print. Demo teknologi AI marketing dan MarTech langsung dari para founder inovatif Eropa."],
+  ["name"=>"Zaki Ramadhan","date"=>"21 Juni 2026","body"=>"Tahun ini upgrade ke VIP All-Access DigiMarCon Zurich dan sangat worth it. $BRAND mengirim jadwal sesi, speaker rundown, dan denah venue di The Circle Zurich H-3 sehingga agenda networking berjalan sangat efisien."],
+  ["name"=>"Aulia Rahma","date"=>"03 Juli 2026","body"=>"Tim kami tiga orang pesan Virtual Pass DigiMarCon Zurich karena cuma bisa pantau dari Jakarta. Akses live stream HD dan rekaman VOD dari $BRAND bekerja sangat mulus tanpa kendala, materi presentasinya berbobot untuk strategi perusahaan."]
+];
+$FAQS = [
+  ["q"=>"Apa itu DigiMarCon Zurich dan apakah $BRAND menjual tiket resmi?","a"=>"DigiMarCon Zurich adalah konferensi dan pameran teknologi digital marketing, media, dan periklanan terbesar di Zurich, Swiss yang mempertemukan ribuan profesional, CMO, founder, agensi dan praktisi teknologi dari seluruh dunia. Ya, $BRAND adalah mitra tiket resmi yang melayani pemesanan dari Indonesia dengan harga bersahabat, konfirmasi instan, CS 24 jam dan panduan lengkap."],
+  ["q"=>"Apa saja yang didapatkan peserta jika memesan tiket lewat $BRAND?","a"=>"Peserta yang memesan lewat $BRAND mendapatkan e-tiket resmi langsung dari panitia, plus akses keynote dari pembicara kelas dunia, panel diskusi interaktif, pameran teknologi, networking luncheon, welcome cocktail, master class (khusus All Access), serta akses Video on Demand 12 bulan (All Access dan Virtual Pass). Tim $BRAND juga mengirimkan panduan check-in dan rundown acara sebelum kegiatan berlangsung."],
+  ["q"=>"Bagaimana cara membeli tiket melalui $BRAND dan apa metode pembayarannya?","a"=>"Klik tombol PESAN / INFO yang tersedia di situs $BRAND, pilih kategori pass (Main Conference, All Access atau Virtual/VOD), isi data peserta sesuai identitas, lalu selesaikan pembayaran via transfer bank lokal (BCA, BRI, BNI, Mandiri) atau e-wallet (DANA/OVO/GoPay/ShopeePay). Setelah pembayaran terkonfirmasi, e-tiket resmi dan invoice langsung dikirim ke email Anda dalam hitungan menit, lengkap dengan kode QR untuk check-in di venue."]
+];
+function e($s){ return htmlspecialchars($s, ENT_QUOTES, "UTF-8"); }
+?>
+<!doctype html>
+<html amp lang="id-ID">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  <title><?php echo e($TITLE); ?></title>
+  <meta name="description" content="<?php echo e($DESCRIPTION); ?>">
+  <meta name="keywords" content="<?php echo e($keyword); ?>">
+  <meta name="author" content="<?php echo e($SITENAME); ?>">
+  <meta name="robots" content="INDEX,FOLLOW">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <link href="<?php echo e($LOGO); ?>" rel="shortcut icon" type="image/x-icon">
+  <link rel="canonical" href="<?php echo e($CANONICAL); ?>">
+
+  <meta property="og:url" content="<?php echo e($CANONICAL); ?>">
+  <meta property="og:site_name" content="<?php echo e($SITENAME); ?>">
+  <meta property="og:image:alt" content="<?php echo e($SITENAME); ?>">
+  <meta property="og:image" content="<?php echo e($BANNER); ?>">
+  <meta property="og:title" content="<?php echo e($TITLE); ?>">
+  <meta property="og:description" content="<?php echo e($DESCRIPTION); ?>">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<?php echo e($TITLE); ?>">
+  <meta name="twitter:description" content="<?php echo e($DESCRIPTION); ?>">
+  <meta name="twitter:image" content="<?php echo e($BANNER); ?>">
+  <meta name="theme-color" content="#000">
+
+  <script async src="https://cdn.ampproject.org/v0.js"></script>
+  <script async custom-element="amp-accordion" src="https://cdn.ampproject.org/v0/amp-accordion-0.1.js"></script>
+
+  <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}    .article-inner h3{font-family:'Cinzel',serif;font-size:15px;color:#e6c36a;margin:10px 0 6px 0;letter-spacing:.5px}
+    .article-inner p{margin-bottom:10px}
+    .article-inner a{color:#e6c36a;font-weight:700;text-decoration:underline}
+  </style>
+  <noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}    .article-inner h3{font-family:'Cinzel',serif;font-size:15px;color:#e6c36a;margin:10px 0 6px 0;letter-spacing:.5px}
+    .article-inner p{margin-bottom:10px}
+    .article-inner a{color:#e6c36a;font-weight:700;text-decoration:underline}
+  </style></noscript>
+
+  <style amp-custom>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Montserrat',sans-serif;background-color:#000;background-image:linear-gradient(rgba(0,0,0,.72),rgba(0,0,0,.72)),url("<?php echo e($BANNER); ?>");background-position:center;background-repeat:no-repeat;background-size:cover;color:#fff;min-height:100vh;margin:0;display:flex;flex-direction:column;align-items:center;padding:20px;overflow-x:hidden}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:linear-gradient(to bottom,rgba(0,0,0,.85) 0%,rgba(0,0,0,.55) 35%,rgba(0,0,0,.35) 55%,rgba(0,0,0,.15) 70%)}
+    .container{position:relative;z-index:2;width:100%;max-width:420px}
+    .logo-container{position:relative;width:160px;height:160px;margin:-10px auto 10px;display:flex;justify-content:center;align-items:center}
+    .logo-ring{position:absolute;width:100%;height:100%;border-radius:50%;border:2px solid transparent;border-top:2px solid #e6c36a;border-right:2px solid #a49616;border-bottom:2px solid #d4a12f;animation:rotateLogo 7s linear infinite;box-shadow:0 0 12px rgba(201,162,77,.35),inset 0 0 10px rgba(164,22,26,.25);z-index:1}
+    .logo-ring::before{content:'';position:absolute;top:10px;left:10px;right:10px;bottom:10px;border-radius:50%;border:1px dashed rgba(230,195,106,.45);animation:rotateLogo 11s linear infinite reverse;box-shadow:inset 0 0 8px rgba(201,162,77,.25)}
+    @keyframes rotateLogo{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+    .logo-link{position:relative;z-index:2;display:block}
+    .logo-img{width:100px;height:auto;filter:drop-shadow(0 0 10px rgba(212,175,55,.5))}
+    .main-heading{font-family:'Cinzel',serif;font-weight:900;font-size:28px;text-align:center;margin:5px 0 8px 0;letter-spacing:3px;text-transform:uppercase;color:#fff;text-shadow:0 0 8px rgba(255,255,255,.9),0 0 16px rgba(255,210,80,.75),0 0 28px rgba(180,0,0,.6);animation:titleGlow 3s ease-in-out infinite alternate}
+    @keyframes titleGlow{from{filter:brightness(1)}to{filter:brightness(1.35)}}
+    .sub-heading{display:block;font-size:12px;text-align:center;color:#D4AF37;letter-spacing:4px;text-transform:uppercase;margin:0 auto 30px;opacity:.9;border-bottom:1px solid rgba(212,175,55,.3);padding-bottom:10px;max-width:320px}
+    .banner-card{width:100%;max-width:380px;margin:0 auto 40px;border-radius:15px;overflow:hidden;border:1px solid rgba(212,175,55,.3);box-shadow:0 20px 40px rgba(0,0,0,.6);position:relative}
+    .banner-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#D4AF37,transparent)}
+    .btn-stack{width:100%;max-width:380px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+    .btn-card{background:rgba(20,20,20,.7);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border:1px solid rgba(212,175,55,.2);border-radius:12px;padding:5px;display:flex;justify-content:space-between;align-items:center;transition:all .3s ease;position:relative;overflow:hidden;box-shadow:0 5px 15px rgba(0,0,0,.3)}
+    .btn-card:hover{border-color:#F4E19C;transform:translateY(-3px);box-shadow:0 10px 30px rgba(212,175,55,.15);background:rgba(30,30,30,.85)}
+    .btn-label{display:flex;align-items:center;gap:15px;padding-left:15px}
+    .btn-text{display:flex;flex-direction:column}
+    .btn-title{font-family:'Cinzel',serif;font-weight:700;font-size:16px;color:#e6c36a;letter-spacing:1.2px;text-shadow:0 2px 6px rgba(164,22,26,.4)}
+    .btn-sub{font-size:10px;color:#a88b5a;text-transform:uppercase;letter-spacing:.8px}
+    .icon-box{width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,rgba(164,22,26,.25),rgba(0,0,0,.6));border-radius:50%;border:1px solid rgba(201,162,77,.45);box-shadow:inset 0 0 6px rgba(201,162,77,.25)}
+    .icon-box amp-img{width:20px;height:20px;filter:drop-shadow(0 0 4px rgba(201,162,77,.6))}
+    .action-link{text-decoration:none;padding:12px 25px;border-radius:8px;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:1.2px;transition:all .3s ease;margin-right:5px;position:relative;z-index:2;display:inline-block}
+    .btn-outline{background:transparent;border:1px solid #a49616;color:#e6c36a}
+    .btn-outline:hover{background:linear-gradient(135deg,#a49616,#d4a12f);color:#fff;box-shadow:0 0 18px rgba(164,22,26,.7)}
+    .btn-daftar-card{background:linear-gradient(145deg,rgba(25,10,10,.9),rgba(60,20,20,.85));border:1px solid #d4a12f;box-shadow:inset 0 0 22px rgba(201,162,77,.15)}
+    .btn-solid{background:linear-gradient(135deg,#d4a12f,#a49616);border:none;color:#fff;padding:12px 35px;box-shadow:0 5px 20px rgba(201,162,77,.5)}
+    .btn-solid:hover{background:linear-gradient(135deg,#f5d77a,#d4a12f);color:#fff;box-shadow:0 8px 30px rgba(201,162,77,.75)}
+    .btn-link{background:transparent;border:1px solid #444;color:#fff}
+    .btn-link:hover{border-color:#a49616;background:rgba(164,22,26,.2);color:#fff}
+    .section{width:100%;max-width:380px;margin:40px auto 0;background:rgba(15,10,5,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(212,175,55,.25);border-radius:15px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+    .section-title{font-family:'Cinzel',serif;font-weight:700;font-size:20px;color:#e6c36a;text-align:center;margin-bottom:18px;letter-spacing:2px;text-shadow:0 0 10px rgba(212,175,55,.4)}
+    .rating-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid rgba(212,175,55,.2)}
+    .stars-big{color:#D4AF37;font-size:22px;letter-spacing:2px;text-shadow:0 0 8px rgba(212,175,55,.6)}
+    .rating-num{font-family:'Cinzel',serif;font-size:26px;font-weight:700;color:#fff}
+    .rating-txt{font-size:12px;color:#a88b5a;text-transform:uppercase;letter-spacing:1px}
+    .review{background:rgba(30,20,10,.6);border:1px solid rgba(212,175,55,.18);border-radius:10px;padding:14px;margin-bottom:12px}
+    .review:last-child{margin-bottom:0}
+    .review-stars{color:#D4AF37;font-size:13px;letter-spacing:1px;margin-bottom:6px;text-shadow:0 0 6px rgba(212,175,55,.4)}
+    .review-name{font-weight:700;font-size:14px;color:#F4E19C}
+    .review-date{font-size:11px;color:#8a7648;margin-bottom:8px}
+    .review-body{font-size:13px;color:#e8e0cc;line-height:1.6}
+    .faq-item{border-bottom:1px solid rgba(212,175,55,.18);padding:6px 0}
+    .faq-item:last-child{border-bottom:none}
+    .faq-q{font-family:'Cinzel',serif;font-weight:700;color:#e6c36a;font-size:15px;padding:10px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;letter-spacing:.5px}
+    .faq-q::after{content:"+";color:#D4AF37;font-size:22px;font-weight:400;line-height:1;font-family:'Montserrat',sans-serif}
+    .faq-a{font-size:14px;color:#d9cfb8;padding:0 0 14px 0;line-height:1.6}
+    .copyright{width:100%;max-width:380px;margin:30px auto 20px;font-size:11px;color:#fff;text-transform:uppercase;letter-spacing:2px;text-align:center;text-shadow:0 0 6px rgba(255,255,255,.8),0 0 12px rgba(255,215,120,.6),0 0 22px rgba(255,180,60,.35);animation:winGlow 2.8s ease-in-out infinite alternate;position:relative;z-index:2}
+    @keyframes winGlow{from{filter:brightness(1)}to{filter:brightness(1.35)}}
+    .bg-glow{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;height:300px;background:radial-gradient(circle,#a49616 0%,transparent 70%);opacity:.08;border-radius:50%;filter:blur(90px);z-index:1;pointer-events:none}
+    body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;background-image:radial-gradient(white 2.4px,transparent 3.4px),radial-gradient(rgba(255,255,255,.95) 2px,transparent 3px),radial-gradient(rgba(255,255,255,.85) 1.6px,transparent 3px),radial-gradient(rgba(255,255,255,.75) 1.2px,transparent 3px),radial-gradient(rgba(255,255,255,.6) 1px,transparent 3px);background-size:140px 140px,180px 180px,220px 220px,260px 260px,300px 300px;opacity:.5;animation:snowFallSmooth 10s linear infinite}
+    @keyframes snowFallSmooth{from{transform:translateY(-600px)}to{transform:translateY(600px)}}
+    amp-accordion section[expanded] .faq-q::after{content:"−"}
+      .article-inner h3{font-family:'Cinzel',serif;font-size:15px;color:#e6c36a;margin:10px 0 6px 0;letter-spacing:.5px}
+    .article-inner p{margin-bottom:10px}
+    .article-inner a{color:#e6c36a;font-weight:700;text-decoration:underline}
+  </style>
+
+<script type="application/ld+json"><?php
+$ld = [
+  "@context" => "https://schema.org",
+  "@graph" => [
+    ["@type"=>"WebPage","@id"=>$url,"url"=>$url,"name"=>$TITLE,"description"=>$DESCRIPTION,"inLanguage"=>"id-ID",
+     "publisher"=>["@type"=>"Organization","name"=>$SITENAME,"logo"=>["@type"=>"ImageObject","url"=>$LOGO,"width"=>500,"height"=>500]]],
+    ["@type"=>"BreadcrumbList","itemListElement"=>[
+       ["@type"=>"ListItem","position"=>1,"name"=>"Home","item"=>$CANONICAL],
+       ["@type"=>"ListItem","position"=>2,"name"=>"DigiMarCon","item"=>$CANONICAL],
+       ["@type"=>"ListItem","position"=>3,"name"=>"Zurich","item"=>$CANONICAL],
+       ["@type"=>"ListItem","position"=>4,"name"=>$SITENAME,"item"=>$CANONICAL],
+       ["@type"=>"ListItem","position"=>5,"name"=>$BRAND,"item"=>$CANONICAL]]],
+    ["@type"=>"Article","headline"=>$H1,"description"=>$DESCRIPTION,
+     "author"=>["@type"=>"Person","name"=>$SITENAME,"url"=>$CANONICAL],
+     "publisher"=>["@type"=>"Organization","name"=>$SITENAME,"logo"=>["@type"=>"ImageObject","url"=>$LOGO]],
+     "url"=>$url,"mainEntityOfPage"=>$CANONICAL,"image"=>$BANNER,
+     "datePublished"=>date("c"),"dateModified"=>date("c"),
+     "keywords"=>$keyword,"articleSection"=>"DigiMarCon Zurich"],
+    ["@type"=>"Product","name"=>$TITLE,"description"=>$DESCRIPTION,"image"=>$BANNER,
+     "brand"=>["@type"=>"Brand","name"=>$SITENAME],
+     "sku"=>strtoupper($brand)."-AMP01",
+     "mpn"=>strtoupper($brand)."-ZURICH",
+     "offers"=>[
+       "@type"=>"Offer",
+       "url"=>$CANONICAL,
+       "priceCurrency"=>"IDR",
+       "price"=>"10000",
+       "priceValidUntil"=>"2026-12-31",
+       "itemCondition"=>"https://schema.org/NewCondition",
+       "availability"=>"https://schema.org/InStock",
+       "seller"=>["@type"=>"Organization","name"=>$SITENAME]
+     ],
+     "aggregateRating"=>["@type"=>"AggregateRating","ratingValue"=>"5.0","bestRating"=>"5","worstRating"=>"1","ratingCount"=>"3216","reviewCount"=>"3216"],
+     "review"=>[
+       ["@type"=>"Review","author"=>["@type"=>"Person","name"=>"Budi Santoso"],"datePublished"=>"2025-08-12",
+        "reviewRating"=>["@type"=>"Rating","ratingValue"=>"5","bestRating"=>"5","worstRating"=>"1"],
+        "reviewBody"=>"Strategi dan materi konferensi dari $BRAND seputar DigiMarCon Zurich benar-benar membuka wawasan! Pemesanan tiket resmi lancar dan tim profesional serta responsif."],
+       ["@type"=>"Review","author"=>["@type"=>"Person","name"=>"Siti Nurhaliza"],"datePublished"=>"2025-08-28",
+        "reviewRating"=>["@type"=>"Rating","ratingValue"=>"5","bestRating"=>"5","worstRating"=>"1"],
+        "reviewBody"=>"Pelayanan tiket dan panduan seminar di $BRAND sangat memuaskan. Info pass lengkap, fast response, dan sangat membantu kebutuhan korporasi kami untuk event di Zurich."],
+       ["@type"=>"Review","author"=>["@type"=>"Person","name"=>"Andi Pratama"],"datePublished"=>"2025-09-03",
+        "reviewRating"=>["@type"=>"Rating","ratingValue"=>"5","bestRating"=>"5","worstRating"=>"1"],
+        "reviewBody"=>"Pesan Virtual Pass DigiMarCon Zurich lewat $BRAND praktis banget. Akses streaming lancar dan rekaman VOD berkualitas jernih. Sangat recommended!"]
+     ]],
+    ["@type"=>"FAQPage","mainEntity"=>array_map(function($f){
+       return ["@type"=>"Question","name"=>$f["q"],"acceptedAnswer"=>["@type"=>"Answer","text"=>$f["a"]]];
+    }, $FAQS)],
+    ["@type"=>"Organization","name"=>"LINK ".$SITENAME,"url"=>$url,"logo"=>$LOGO]
+  ]
+];
+echo json_encode($ld, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
+?></script>
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <div class="container">
+    <div class="logo-container">
+      <div class="logo-ring"></div>
+      <a href="<?php echo e($CANONICAL); ?>" class="logo-link">
+        <amp-img class="logo-img" src="<?php echo e($LOGO); ?>" alt="Logo" width="100" height="100" layout="fixed"></amp-img>
+      </a>
+    </div>
+
+    <h1 class="main-heading"><?php echo e($BRAND); ?></h1>
+    <div class="sub-heading">DIGIMARCON ZURICH</div>
+
+    <div class="banner-card">
+      <amp-img src="<?php echo e($BANNER); ?>" width="500" height="500" layout="responsive" alt="<?php echo e($SITENAME); ?>"></amp-img>
+    </div>
+
+    <div class="btn-stack">
+      <div class="btn-card">
+        <div class="btn-label">
+          <div class="icon-box">
+            <amp-img src="https://i.gyazo.com/7c4244e27ceb01f6cb30f783af333518.png" width="20" height="20" alt="icon" layout="fixed"></amp-img>
+          </div>
+          <div class="btn-text">
+            <span class="btn-title">LOGIN</span>
+            <span class="btn-sub">LOGIN <?php echo e($BRAND); ?> NOW!</span>
+          </div>
+        </div>
+        <a href="<?php echo e($LOGIN); ?>" class="action-link btn-outline">Masuk</a>
+      </div>
+
+      <div class="btn-card btn-daftar-card">
+        <div class="btn-label">
+          <div class="icon-box" style="border-color:#F4E19C;">
+            <amp-img src="https://i.gyazo.com/7c4244e27ceb01f6cb30f783af333518.png" width="20" height="20" alt="icon" layout="fixed"></amp-img>
+          </div>
+          <div class="btn-text">
+            <span class="btn-title" style="color:#fff;">DAFTAR</span>
+            <span class="btn-sub" style="color:#F4E19C;">Mudah &amp; Cepat</span>
+          </div>
+        </div>
+        <a href="<?php echo e($DAFTAR); ?>" class="action-link btn-solid">Gabung</a>
+      </div>
+
+      <div class="btn-card">
+        <div class="btn-label">
+          <div class="icon-box">
+            <amp-img src="https://i.gyazo.com/7c4244e27ceb01f6cb30f783af333518.png" width="20" height="20" alt="icon" layout="fixed"></amp-img>
+          </div>
+          <div class="btn-text">
+            <span class="btn-title">PROMO <?php echo e($BRAND); ?></span>
+            <span class="btn-sub">Link Alternatif</span>
+          </div>
+        </div>
+        <a href="<?php echo e($LOGIN); ?>" class="action-link btn-link">Akses</a>
+      </div>
+    </div>
+
+    <section class="section">
+      <h2 class="section-title">&#10026; Rating &amp; Testimoni</h2>
+      <div class="rating-row">
+        <div class="stars-big">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="rating-num">5.0</div>
+        <div class="rating-txt">3,216 Review Terverifikasi</div>
+      </div>
+      <div class="reviews-list">
+        <?php foreach($REVIEWS as $r): ?>
+        <div class="review">
+          <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="review-name"><?php echo e($r['name']); ?></div>
+          <div class="review-date"><?php echo e($r['date']); ?></div>
+          <div class="review-body"><?php echo e($r['body']); ?></div>
+        </div>
+        <?php endforeach; ?>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">&#10067; FAQ</h2>
+      <amp-accordion animate>
+        <?php foreach($FAQS as $i => $f): ?>
+        <section<?php if($i===0): ?> expanded<?php endif; ?>>
+          <h3 class="faq-q"><?php echo e($f['q']); ?></h3>
+          <p class="faq-a"><?php echo e($f['a']); ?></p>
+        </section>
+        <?php endforeach; ?>
+      </amp-accordion>
+    </section>
+
+        <section class="section">
+      <h2 class="section-title">&#128220; Panduan &amp; Informasi</h2>
+      <div style="font-size:13px;color:#e8e0cc;line-height:1.7;">
+        <?php echo $ARTIKEL; ?>
+      </div>
+    </section>
+
+    <p class="copyright">&copy; <?php echo date('Y'); ?> Copyright By <?php echo e($SITENAME); ?></p>
+  </div>
+</body>
+</html>
